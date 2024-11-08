@@ -1,36 +1,27 @@
-# This is a basic workflow to help you get started with Actions
+name: Run Specific Postman Collection Test
 
-name: CI
-
-# Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the "main" branch
   push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
-
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
-
-# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+    branches:
+      - main
+      
 jobs:
-  # This workflow contains a single job called "build"
-  build:
-    # The type of runner that the job will run on
+  run-testcalc_ut:
+    name: Run testcalc_ut.postman_collection
     runs-on: ubuntu-latest
 
-    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v4
+      # 1. Checkout the repository
+      - name: Checkout Repository
+        uses: actions/checkout@v3
 
-      # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: echo Hello, world!
+      # 2. Install Newman
+      - name: Install Newman
+        run: npm install -g newman
 
-      # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
+      # 3. Run the specific Postman test
+      - name: Run Postman Collection on testcalc_ut
         run: |
-          echo Add other actions to build,
-          echo test, and deploy your project.
+          newman run lab_8/tests/calc_ut.postman_collection.json \
+            --reporters cli,junit \
+            --reporter-junit-export lab_8/tests/test_results/calc_ut-report.xml
