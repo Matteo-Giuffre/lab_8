@@ -22,6 +22,6 @@ jobs:
       # 3. Run the specific Postman test
       - name: Run Postman Collection on testcalc_ut
         run: |
-          newman run lab_8/tests/calc_ut.postman_collection.json \
+          newman run tests/calc_ut.postman_collection.json \
             --reporters cli,junit \
-            --reporter-junit-export lab_8/tests/test_results/calc_ut-report.xml
+            --reporter-junit-export tests/test_results/calc_ut-report.xml
